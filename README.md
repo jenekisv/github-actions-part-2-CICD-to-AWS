@@ -1,1 +1,1 @@
-# github-actions-part-2-CICD-to-AWS
+# github-actions-part-1-basics
