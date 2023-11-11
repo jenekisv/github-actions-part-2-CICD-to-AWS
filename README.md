@@ -1,4 +1,4 @@
-# github-actions-part-1-basics
+# github-actions-part-2-CICD-to-AWS
 
 # Status of Last Deployment:
 
