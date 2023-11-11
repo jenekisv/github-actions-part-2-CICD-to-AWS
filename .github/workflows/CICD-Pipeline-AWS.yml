@@ -25,4 +25,4 @@ jobs:
         uses: actions/checkout@v1
         
       - name: Create ZIP Deployment package
-        run: zip -r ${{ env.DEPLOYMENT_PACKAGE_NAME }} ./ -X *.git*
+        run: zip -r ${{ env.DEPLOYMENT_PACKAGE_NAME }} ./ -x *.git*
