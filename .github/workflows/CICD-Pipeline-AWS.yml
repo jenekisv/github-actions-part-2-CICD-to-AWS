@@ -2,65 +2,27 @@
 # GitHub Action - Evgenii Sviridov 2023
 # -------------------------------------
 
-name: My-GitHubActions-Basics
-env:
-  APPLICATION_NAME: "MyFlask"
-  DEPLOY_PACKAGE_NAME: "Flask-Deploy-Ver-${{ github.sha }}"
+name: CICD-Pipeline-to-AWS-Elastic-Beanstalk
 
+env:
+  EB_PACKAGE_S3_BUCKET_NAME: "evgeniyisv.flask.app.package"
+  EB_APPLICATION_NAME: "MyFlask"
+  EB_ENVIRONMENT_NAME: "MyFlask-env"
+  DEPLOYMENT_PACKAGE_NAME: "flask_app_${{ github.sha }}.zip"
+  AWS_REGION_NAME: "eu-central-1"
+  
 on: 
   push:
     branches: 
       - main
 
 jobs:
-  my-testing:  
+  my-CI-part:  
     runs-on: Ubuntu-Latest
 
     steps:
       - name: Git Clone my repo
         uses: actions/checkout@v1
         
-      - name: Print Hello Message
-        run: echo "Hello World from Testing job"
-        
-      - name: Execute few commands
-        run: |
-          echo "Hello Message 1"
-          echo "Hello Message 2"
-          echo "Application name:${{ env.APPLICATION_NAME }}"
-
-      - name: list Current Folder
-        run: ls -la
-
-
-  my-deploy:  
-    runs-on: Ubuntu-Latest
-    needs: [my-testing]
-    env:
-      VAR1: "This is Job Level Variable1"
-      VAR2: "This is Job Level Variable2"
-      
-    steps:
-      - name: Git Clone my repo
-        uses: actions/checkout@v1
-        
-      - name: Print Hello Message
-        run: echo "Hello World from Deploy job"
-
-      - name: Print env vars
-        run: |
-          echo "Var1 = ${{ env.VAR1 }}"
-          echo "Var2 = ${{ env.VAR2 }}"
-          echo "Var3 = $LOCAL_VAR"
-        env:
-          LOCAL_VAR: "This is Local Variable"
-
-          
-      - name: Printing Deployment Package
-        run: echo "Deploy package name is:${{ env.DEPLOY_PACKAGE_NAME }}"
-         
-      - name: Lets Test some Package AWS
-        run: aws --version
-         
-      - name: Lets Test some Package ZIP
-        run: zip --version
+      - name: Create ZIP Deployment package
+        run: zip -r ${{ env.DEPLOYMENT_PACKAGE_NAME }} ./ -X *.git*
