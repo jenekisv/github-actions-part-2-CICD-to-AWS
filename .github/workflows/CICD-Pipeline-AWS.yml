@@ -53,8 +53,9 @@ jobs:
           aws-region: ${{ env.AWS_REGION_NAME }}
                 
       - name: Create new ElasticBeanstalk Application
-        run: aws elasticbeanstalk create-application-version \
-          --application-name ${{ EB_APPLICATION_NAME }} \
+        run: |
+          aws elasticbeanstalk create-application-version \
+          --application-name "${{ EB_APPLICATION_NAME }}" \
           --source-bundle S3Bucket="${{ env.EB_PACKAGE_S3_BUCKET_NAME }}",S3Key="${{ env.DEPLOYMENT_PACKAGE_NAME }}" \
           --version-lable "Ver-${{ github.sha }}" \
           --description "Coimmit SHA-${{ github.sha }}"
@@ -62,7 +63,7 @@ jobs:
       - name: Deploy new ElasticBeanstalk Application Version
         run: |
           aws elasticbeanstalk update-environment \
-          --environment-name ${{ EB_ENVIRONMENT_NAME }} \
+          --environment-name "${{ EB_ENVIRONMENT_NAME }}" \
           --version-lable "Ver-${{ github.sha }}"
         
       - name: Print Happy Message for CD Finish
